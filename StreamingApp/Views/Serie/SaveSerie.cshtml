@@ -1,0 +1,62 @@
+﻿@model Application.ViewModels.SaveSerieViewModel
+@{
+    bool editMode = Model.Id == 0 ? false : true;
+    ViewData["Title"] = "Save Serie";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    <h4>@(editMode ? $"Editando la serie: {Model.Name}" : "Creando nueva serie")</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-controller="Serie" asp-action="@(editMode ? "Edit" : "Create")">
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Nombre: </label>
+                            <input type="text" asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ImageUrl" class="form-label">Image Url: </label>
+                            <input type="text" asp-for="ImageUrl" class="form-control" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VideoUrl" class="form-label">VideoUrl: </label>
+                            <input type="text" asp-for="VideoUrl" class="form-control" />
+                            <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="GenreId" class="form-label">Genero: </label>
+                            <select asp-for="GenreId" class="form-select" asp-items="@(new SelectList(Model.GenreList, "Id", "Name"))" aria-label="Default select example">
+                                <option selected> Selecciona el genero</option>
+                            </select>
+                            <span asp-validation-for="GenreId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProducerId" class="form-label">Productor: </label>
+                            <select asp-for="ProducerId" class="form-select" asp-items="@(new SelectList(Model.ProducerList, "Id", "Name"))" aria-label="Default select example">
+                                <option selected> Selecciona la productora</option>
+                            </select>
+                            <span asp-validation-for="ProducerId" class="text-danger"></span>
+                        </div>
+
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a asp-controller="Serie" asp-action="Index" class="btn btn-warning">Volver</a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+﻿@using Application.ViewModels;
+@model List<SerieViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid">
+   
+    <a class="btn btn-success" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+        Buscar series
+    </a>
+
+    <div class="offcanvas offcanvas-start colorbg" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filtrar Series</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="container-fluid mb-3">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" value="null" type="checkbox" name="GenreId" id="genre-all" />
+                            <label class="form-check-label" for="genre-all">All</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <form method="post" asp-controller="Home" asp-action="Index">
+            <div class="container-fluid mb-3">
+                <div class="row">
+                            <div class="col-lg-9">
+                                <input name="SerieName" class="form-control me-2" type="search" placeholder="Search by serie name" aria-label="Search">
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+                            </div>
+                </div>
+            </div>
+                        </form>
+            <form method="post" asp-controller="Home" asp-action="Index">
+                <div class="container-fluid">
+                    <div class="row g-3">
+                        <div class="col-lg-9">
+                            <select name="ProducerId" class="form-select col-lg-9 mb-3">
+                                <option value="">Todos las productoras</option>
+                                @foreach (ProducerViewModel producer in ViewBag.Producers)
+                                {
+                                    <span asp-validation-for="@producer.Id" class="text-danger"></span>
+                                    <option value="@producer.Id">@producer.Name</option>
+                        
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success" type="submit">Filtrar</button>
+            </form>
+        </div>
+    </div>
+
+  <div class="row">
+    @if(Model == null || Model.Count == 0)
+    {
+
+          
+        <h2>No hay series disponibles</h2>
+    } 
+    else
+    {
+        @foreach(SerieViewModel item in Model)
+        {
+            <div class="col-4 mb-3 mt-4">
+                    <div class="card border-dark bg-primary-subtle" style="width: 18rem;">
+                    <img src="@item.ImageUrl" class="card-img-top img-serie-size" alt="...">
+                        <div class="m-3">
+                            <div class="container-fluid text-center">
+                                <h5 class="card-title">@item.Name</h5>
+                            </div>
+                        </div>
+                        <div class="container-fluid text-center">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <span class="badge text-bg-success">@item.GenreName</span>
+                                </div>
+                                <div class="col">
+                                    <span class="badge text-bg-danger">@item.ProducerName</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body text-end">
+                            <a href="@Url.Action("VideoPlayer", "Serie", new { id = item.Id })" class="btn btn-outline-success mt-3">Ver Serie</a>
+                        </div>
+                </div>
+            </div>
+        }
+    }
+  </div>
+</div>
+
